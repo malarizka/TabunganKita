@@ -1,0 +1,1359 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Wedding Organizer - Tabungan Kita</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Nunito:wght@400;600;700&family=Playfair+Display:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --wine: #6e1a30;
+        --wine-dark: #561225;
+        --wine-light: #8a2540;
+        --gold: #c9a063;
+        --gold-light: #e8cf9f;
+        --cream: #f6efe6;
+        --sand: #efe3d3;
+        --paper: #fffdfa;
+        --blush: #fbf1e3;
+        --ink: #3a1520;
+        --muted: #8b6f6a;
+        --line: #e4d6c4;
+        --ok: #4f8a5b;
+        --font-display: "Playfair Display", Georgia, serif;
+        --font-script: "Great Vibes", cursive;
+        --font-body: "Nunito", system-ui, sans-serif;
+        --radius-lg: 26px;
+        --radius-md: 18px;
+        --radius-sm: 12px;
+        --shadow: 0 6px 20px rgba(110, 26, 48, 0.08);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+      }
+
+      body {
+        position: relative;
+        min-height: 100vh;
+        overflow-x: hidden;
+        background: var(--cream);
+        color: var(--ink);
+        font-family: var(--font-body);
+        line-height: 1.5;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        background:
+          radial-gradient(circle, rgba(110, 26, 48, 0.09) 2px, transparent 3px)
+            0 0 / 38px 38px,
+          radial-gradient(
+              circle,
+              rgba(201, 160, 99, 0.16) 1.5px,
+              transparent 2.5px
+            )
+            19px 19px / 38px 38px;
+      }
+
+      button,
+      input,
+      textarea {
+        font: inherit;
+        color: inherit;
+      }
+
+      button {
+        cursor: pointer;
+      }
+
+      :focus-visible {
+        outline: 3px solid var(--gold);
+        outline-offset: 2px;
+      }
+
+      .wrap {
+        position: relative;
+        z-index: 1;
+        max-width: 1100px;
+        margin: auto;
+        padding: clamp(12px, 3vw, 32px);
+      }
+
+      .topbar {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 10px;
+      }
+
+      .saved-badge {
+        padding: 5px 12px;
+        border-radius: 99px;
+        background: white;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+        font-size: 12px;
+      }
+
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: 1.3fr 1fr;
+        gap: 20px;
+        align-items: center;
+        padding: clamp(20px, 4vw, 44px);
+        border-radius: var(--radius-lg);
+        background: radial-gradient(
+          circle at 20% 10%,
+          var(--wine-light),
+          var(--wine) 60%,
+          var(--wine-dark)
+        );
+        color: white;
+        box-shadow: 0 18px 40px rgba(110, 26, 48, 0.35);
+      }
+
+      .hero-title {
+        font-family: var(--font-script);
+        font-size: clamp(54px, 11vw, 118px);
+        font-weight: 400;
+        line-height: 0.95;
+        background: linear-gradient(180deg, #f3dcaa, #b98a4d);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .hero-subtitle {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin: 4px 0 10px;
+        color: var(--gold-light);
+        font-family: var(--font-display);
+        font-size: clamp(11px, 1.8vw, 16px);
+        letter-spacing: 0.35em;
+      }
+
+      .hero-subtitle::before,
+      .hero-subtitle::after {
+        content: "";
+        width: 34px;
+        height: 1px;
+        background: var(--gold);
+      }
+
+      .couple-names {
+        font-family: var(--font-script);
+        font-size: clamp(28px, 5vw, 42px);
+      }
+
+      .couple-names span {
+        padding: 0 2px;
+        border-bottom: 1px dashed rgba(255, 255, 255, 0.35);
+        outline: none;
+      }
+
+      .hero-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 14px;
+        margin: 8px 0 16px;
+        color: #f3e3d3;
+        font-size: 13px;
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .days-left {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+        padding: 10px 18px;
+        border: 2px solid rgba(255, 255, 255, 0.4);
+        border-radius: 16px;
+        background: linear-gradient(180deg, #f3dcaa, #d4aa6d);
+        color: var(--wine);
+      }
+
+      .days-left b {
+        font-family: var(--font-display);
+        font-size: clamp(30px, 6vw, 44px);
+        line-height: 1;
+      }
+
+      .days-left small {
+        max-width: 90px;
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 1.25;
+      }
+
+      .hero-anniv {
+        margin-top: 14px;
+        color: var(--gold-light);
+        font-family: var(--font-display);
+        font-size: clamp(14px, 2.4vw, 18px);
+      }
+
+      .hero-badge {
+        display: grid;
+        place-items: center;
+        width: min(100%, 300px);
+        aspect-ratio: 1;
+        margin: auto;
+        padding: 18px;
+        border: 6px solid white;
+        border-radius: 50%;
+        background: var(--blush);
+        box-shadow: 0 0 0 2px var(--gold);
+        color: var(--wine);
+        text-align: center;
+      }
+
+      .hero-badge svg {
+        display: block;
+        max-width: 100%;
+        height: auto;
+        margin: 0 auto 6px;
+      }
+
+      .hero-badge strong {
+        display: block;
+        font-family: var(--font-script);
+        font-size: clamp(24px, 4.5vw, 34px);
+        font-weight: 400;
+        line-height: 1.1;
+      }
+
+      .hero-badge small {
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+        margin: 18px 0;
+      }
+
+      .card {
+        padding: 16px 18px;
+        border-radius: var(--radius-md);
+        background: var(--paper);
+        box-shadow: var(--shadow);
+      }
+
+      .label {
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .value {
+        margin: 4px 0 8px;
+        font-family: var(--font-display);
+        font-size: clamp(20px, 3vw, 28px);
+        font-weight: 600;
+        overflow-wrap: anywhere;
+      }
+
+      .note {
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+
+      .tab {
+        flex: 1 1 120px;
+        max-width: 220px;
+        padding: 14px 20px;
+        border: 2px solid transparent;
+        border-radius: 16px;
+        background: var(--paper);
+        box-shadow: var(--shadow);
+        font-family: var(--font-display);
+        font-size: 15px;
+        font-weight: 600;
+      }
+
+      .tab.is-active {
+        border-color: var(--gold);
+        background: var(--wine);
+        color: white;
+      }
+
+      .pane {
+        display: none;
+      }
+
+      .pane.is-active {
+        display: block;
+      }
+
+      .field,
+      .money input {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-sm);
+        background: white;
+      }
+
+      .form {
+        display: grid;
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      .btn {
+        padding: 11px 20px;
+        border: 0;
+        border-radius: 99px;
+        background: var(--wine);
+        color: white;
+        font-weight: 700;
+        box-shadow: 0 6px 14px rgba(110, 26, 48, 0.25);
+        transition: transform 0.15s;
+      }
+
+      .btn:active {
+        transform: scale(0.97);
+      }
+
+      .btn-soft {
+        background: #f3e7d6;
+        color: var(--wine);
+        box-shadow: none;
+      }
+
+      .btn-ghost {
+        padding: 10px 16px;
+        border: 1px solid var(--gold-light);
+        border-radius: 99px;
+        background: transparent;
+        color: white;
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .btn-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 18px 0 10px;
+      }
+
+      .chip {
+        padding: 6px 14px;
+        border: 1px solid var(--line);
+        border-radius: 99px;
+        background: white;
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .chip.is-active {
+        background: var(--wine);
+        color: white;
+      }
+
+      .saver-head {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-family: var(--font-display);
+        font-size: 18px;
+      }
+
+      .tag {
+        color: var(--gold);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .avatar {
+        display: inline-grid;
+        flex: none;
+        place-items: center;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        font: 600 14px var(--font-display);
+      }
+
+      .avatar.f {
+        background: #f6d9e0;
+        color: var(--wine);
+      }
+
+      .avatar.m {
+        background: #e9dcc3;
+        color: #6b4a14;
+      }
+
+      .progress {
+        height: 8px;
+        overflow: hidden;
+        border-radius: 9px;
+        background: var(--sand);
+      }
+
+      .progress i {
+        display: block;
+        height: 100%;
+        border-radius: 9px;
+        background: linear-gradient(90deg, #a6525f, var(--wine));
+        transition: width 0.6s;
+      }
+
+      .list {
+        display: grid;
+        gap: 8px;
+      }
+
+      .item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 14px;
+        border-radius: 14px;
+        background: var(--paper);
+        box-shadow: 0 4px 12px rgba(110, 26, 48, 0.06);
+      }
+
+      .item-text {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .item-text b {
+        display: block;
+        font-family: var(--font-display);
+      }
+
+      .item-text small {
+        color: var(--muted);
+        overflow-wrap: anywhere;
+      }
+
+      .item-remove {
+        padding: 8px 12px;
+        border: 1px solid #e7c8ce;
+        border-radius: 99px;
+        background: #fff1f2;
+        color: #a52a43;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .item-remove:hover {
+        background: #a52a43;
+        color: white;
+      }
+
+      .empty {
+        padding: 22px;
+        border: 1px dashed #dcc9ae;
+        border-radius: 14px;
+        background: var(--paper);
+        color: var(--muted);
+        text-align: center;
+      }
+
+      .question {
+        min-height: 84px;
+        margin: 12px 0;
+        padding: 14px 16px;
+        border-left: 4px solid var(--gold);
+        border-radius: 10px;
+        background: var(--blush);
+        font-family: var(--font-display);
+        font-size: clamp(17px, 2.6vw, 21px);
+        line-height: 1.45;
+      }
+
+      .section-title {
+        width: 100%;
+        font-family: var(--font-display);
+        font-size: 18px;
+      }
+
+      .anniv-title {
+        margin-top: 4px;
+        font-family: var(--font-display);
+        font-size: clamp(20px, 4vw, 30px);
+      }
+
+      .counter {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+        margin: 14px 0;
+      }
+
+      .counter div {
+        padding: 14px 4px;
+        border-radius: 14px;
+        background: var(--blush);
+        text-align: center;
+      }
+
+      .counter b {
+        display: block;
+        color: var(--wine);
+        font-family: var(--font-display);
+        font-size: clamp(24px, 5vw, 38px);
+      }
+
+      .counter small {
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .milestones {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 14px;
+      }
+
+      .milestones span {
+        padding: 6px 12px;
+        border-radius: 99px;
+        background: var(--sand);
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .milestones span.is-done {
+        background: #e0efe2;
+        color: var(--ok);
+      }
+
+      .date-picker {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+        margin-top: 16px;
+      }
+
+      .date-picker input {
+        width: auto;
+      }
+
+      .toast {
+        position: fixed;
+        bottom: 22px;
+        left: 50%;
+        z-index: 60;
+        max-width: 92vw;
+        padding: 12px 20px;
+        border-radius: 16px;
+        background: var(--wine);
+        color: white;
+        font-size: 14px;
+        font-weight: 600;
+        text-align: center;
+        transform: translate(-50%, 120px);
+        transition: transform 0.35s;
+      }
+
+      .toast.is-visible {
+        transform: translate(-50%, 0);
+      }
+
+      @media (max-width: 860px) {
+        .hero {
+          grid-template-columns: 1fr;
+          text-align: center;
+        }
+        .hero-badge {
+          order: -1;
+          width: min(70%, 240px);
+        }
+        .hero-actions,
+        .hero-meta,
+        .hero-subtitle {
+          justify-content: center;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .grid-2 {
+          grid-template-columns: 1fr;
+        }
+        .tab {
+          min-width: 0;
+          padding: 12px 6px;
+          font-size: 13px;
+        }
+        .counter {
+          gap: 8px;
+        }
+        .card {
+          padding: 14px;
+        }
+      }
+
+      @media (max-width: 380px) {
+        .stats {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation: none !important;
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrap">
+      <div class="topbar">
+        <span class="saved-badge">Tersimpan di perangkat ini</span>
+      </div>
+
+      <header class="hero">
+        <div>
+          <h1 class="hero-title">Wedding</h1>
+          <div class="hero-subtitle">ORGANIZER</div>
+
+          <div class="couple-names">
+            <span id="nameF" contenteditable="true" spellcheck="false"
+              >Aldi</span
+            >
+            &amp;
+            <span id="nameM" contenteditable="true" spellcheck="false"
+              >Malla</span
+            >
+          </div>
+
+          <div class="hero-meta">
+            <span>Jadian 4 September 2025</span>
+            <span>Klik nama untuk mengubah</span>
+          </div>
+
+          <div class="hero-actions">
+            <div class="days-left">
+              <b id="daysLeft">0</b>
+              <small>hari menuju aniv berikutnya</small>
+            </div>
+            <button class="btn-ghost" data-action="tab" data-tab="anniv">
+              Lihat anniversary
+            </button>
+          </div>
+
+          <div class="hero-anniv" id="heroAnniv"></div>
+        </div>
+
+        <div class="hero-badge">
+          <div>
+            <svg viewBox="0 0 120 70" width="130" aria-hidden="true">
+              <circle
+                cx="45"
+                cy="35"
+                r="26"
+                fill="none"
+                stroke="#c9a063"
+                stroke-width="5"
+              />
+              <circle
+                cx="75"
+                cy="35"
+                r="26"
+                fill="none"
+                stroke="#6e1a30"
+                stroke-width="5"
+              />
+            </svg>
+            <strong>Menabung bersama</strong>
+            <small id="badgeSub"></small>
+          </div>
+        </div>
+      </header>
+
+      <section class="stats">
+        <div class="card">
+          <div class="label">Total tabungan bersama</div>
+          <div class="value" id="statTotal"></div>
+          <div class="note">Jumlah uang yang sudah kalian kumpulkan</div>
+        </div>
+        <div class="card">
+          <div class="label">Jumlah menabung</div>
+          <div class="value" id="statCount"></div>
+          <div class="note">Total catatan tabungan kalian</div>
+        </div>
+      </section>
+
+      <nav class="tabs">
+        <button class="tab is-active" data-action="tab" data-tab="savings">
+          Tabungan
+        </button>
+        <button class="tab" data-action="tab" data-tab="questions">
+          Tanya Pasangan
+        </button>
+        <button class="tab" data-action="tab" data-tab="anniv">
+          Anniversary
+        </button>
+      </nav>
+
+      <section class="pane is-active" id="pane-savings">
+        <div class="grid-2" id="savers"></div>
+        <div class="chips" id="filters"></div>
+        <div class="list" id="history"></div>
+      </section>
+
+      <section class="pane" id="pane-questions">
+        <div class="grid-2" id="questions"></div>
+        <div class="chips">
+          <span class="section-title">Jawaban yang tersimpan</span>
+        </div>
+        <div class="list" id="answers"></div>
+      </section>
+
+      <section class="pane" id="pane-anniv">
+        <div class="card">
+          <div class="tag">Perjalanan cinta kita</div>
+          <h2 class="anniv-title" id="annivTitle"></h2>
+          <div class="counter" id="counter"></div>
+
+          <div class="label">Menuju anniversary berikutnya</div>
+          <div class="progress" style="margin-top: 6px">
+            <i id="barAnniv"></i>
+          </div>
+          <div class="note" id="annivNote" style="margin-top: 6px"></div>
+
+          <div class="milestones" id="milestones"></div>
+
+          <div class="date-picker">
+            <label class="label" for="startDate">Tanggal jadian</label>
+            <input class="field" type="date" id="startDate" />
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="toast" id="toast" role="status"></div>
+
+    <script>
+      (() => {
+        "use strict";
+
+        const STORAGE_KEY = "wedding-planner-id";
+        const MILESTONE_DAYS = [100, 200, 365, 500, 730, 1000];
+
+        const QUESTIONS = {
+          m: [
+            "Apa yang bikin kamu yakin mau menikah denganku?",
+            "Apa kenangan kita yang paling bikin kamu tersenyum?",
+            "Apa yang ingin kamu perbaiki dari dirimu untuk kita?",
+            "Gimana kamu membayangkan hari-hari biasa kita setelah menikah?",
+            "Pekerjaan rumah apa yang paling ingin kamu bagi dua?",
+            "Apa yang aku lakukan yang bikin kamu merasa tenang?",
+            "Apa tujuan keuangan terbesar kita menurutmu?",
+            "Tempat apa yang ingin kamu kunjungi bersamaku?",
+            "Tradisi kecil apa yang ingin kita mulai?",
+            "Kalau aku lagi sedih, kamu ingin aku diperlakukan seperti apa?",
+          ],
+          f: [
+            "Apa momen paling berkesan sejak kita jadian?",
+            "Apa hal pertama yang bikin kamu tertarik sama aku?",
+            "Rumah impian kita menurutmu seperti apa?",
+            "Berapa anak yang kamu mau, dan siapa nama favoritmu?",
+            "Apa yang paling kamu khawatirkan soal pernikahan?",
+            "Kebiasaanku yang mana yang paling kamu suka?",
+            "Apa mimpi terbesarmu 5 tahun lagi?",
+            "Dengan cara apa kamu merasa paling dicintai?",
+            "Honeymoon impianmu di mana?",
+            "Janji apa yang ingin kamu ucapkan di hari pernikahan kita?",
+          ],
+        };
+
+        const DEFAULT_STATE = {
+          names: { f: "Aldi", m: "Malla" },
+          startDate: "2025-09-04",
+          savings: [],
+          answers: {},
+          questionIndex: { f: 0, m: 0 },
+        };
+
+        const $ = (selector) => document.querySelector(selector);
+        const $$ = (selector) => document.querySelectorAll(selector);
+
+        const formatRupiah = (n) =>
+          "Rp" + Math.round(n).toLocaleString("id-ID");
+
+        const formatDate = (d, opts) => d.toLocaleDateString("id-ID", opts);
+
+        const escapeHtml = (text) =>
+          String(text).replace(
+            /[&<>"']/g,
+            (c) =>
+              ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#39;",
+              })[c],
+          );
+
+        const Storage = {
+          load() {
+            try {
+              return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+            } catch {
+              return {};
+            }
+          },
+          save() {
+            try {
+              localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+            } catch {
+              showToast("Tidak bisa menyimpan data di browser ini");
+            }
+          },
+        };
+
+        const savedState = Storage.load();
+
+        // Paksa nama menjadi Aldi dan Malla
+        savedState.names = {
+          ...(savedState.names || {}),
+          f: "Aldi",
+          m: "Malla",
+        };
+
+        const state = {
+          ...DEFAULT_STATE,
+          ...savedState,
+          names: {
+            ...DEFAULT_STATE.names,
+            ...(savedState.names || {}),
+          },
+          questionIndex: {
+            ...DEFAULT_STATE.questionIndex,
+            ...(savedState.questionIndex || {}),
+          },
+          savings: Array.isArray(savedState.savings)
+            ? savedState.savings
+                .filter((item) => item && ["f", "m"].includes(item.who))
+                .map((item) => ({
+                  ...item,
+                  amount: Number(item.amount) || 0,
+                  id: String(
+                    item.id ??
+                      `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`,
+                  ),
+                }))
+                .filter((item) => item.amount > 0)
+            : [],
+          answers:
+            savedState.answers && typeof savedState.answers === "object"
+              ? savedState.answers
+              : {},
+        };
+
+        state.startDate = /^\d{4}-\d{2}-\d{2}$/.test(state.startDate || "")
+          ? state.startDate
+          : DEFAULT_STATE.startDate;
+
+        ["f", "m"].forEach((who) => {
+          state.names[who] = String(
+            state.names[who] || DEFAULT_STATE.names[who],
+          );
+          state.questionIndex[who] = Math.max(
+            0,
+            Number(state.questionIndex[who]) || 0,
+          );
+        });
+
+        let activeFilter = "all";
+        let toastTimer;
+
+        const totalSaved = (who) =>
+          state.savings
+            .filter((s) => !who || s.who === who)
+            .reduce((sum, s) => sum + s.amount, 0);
+
+        const currentQuestion = (who) =>
+          QUESTIONS[who][state.questionIndex[who] % QUESTIONS[who].length];
+
+        function showToast(message) {
+          const el = $("#toast");
+          el.textContent = message;
+          el.classList.add("is-visible");
+          clearTimeout(toastTimer);
+          toastTimer = setTimeout(
+            () => el.classList.remove("is-visible"),
+            4000,
+          );
+        }
+
+        function avatar(who) {
+          return `<span class="avatar ${who}">${escapeHtml((state.names[who] || "?")[0].toUpperCase())}</span>`;
+        }
+
+        function calcAnniversary() {
+          const start = new Date(state.startDate + "T00:00:00");
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
+
+          if (start > today) {
+            return {
+              years: 0,
+              months: 0,
+              days: 0,
+              label: "Tanggal jadian belum tiba",
+              next: start,
+              totalDays: 0,
+              daysLeft: Math.ceil((start - today) / 86400000),
+              percent: 0,
+            };
+          }
+
+          let years = today.getFullYear() - start.getFullYear();
+          let months = today.getMonth() - start.getMonth();
+          let days = today.getDate() - start.getDate();
+
+          if (days < 0) {
+            months--;
+            days += new Date(
+              today.getFullYear(),
+              today.getMonth(),
+              0,
+            ).getDate();
+          }
+          if (months < 0) {
+            years--;
+            months += 12;
+          }
+
+          const previous = new Date(
+            start.getFullYear() + years,
+            start.getMonth(),
+            start.getDate(),
+          );
+          const next = new Date(
+            start.getFullYear() + years + 1,
+            start.getMonth(),
+            start.getDate(),
+          );
+
+          const label =
+            years > 0 && months === 0 && days === 0
+              ? `Selamat anniversary ke-${years} tahun!`
+              : years < 1
+                ? "Menuju anniversary ke-1 tahun"
+                : `Aniv ke-${years} tahun menuju ${years + 1} tahun`;
+
+          return {
+            years,
+            months,
+            days,
+            label,
+            next,
+            totalDays: Math.floor((today - start) / 86400000),
+            daysLeft: Math.round((next - today) / 86400000),
+            percent: Math.min(
+              100,
+              Math.max(0, ((today - previous) / (next - previous)) * 100),
+            ),
+          };
+        }
+
+        function renderHero(anniv) {
+          $("#nameF").textContent = state.names.f;
+          $("#nameM").textContent = state.names.m;
+          $("#daysLeft").textContent = anniv.daysLeft;
+          $("#heroAnniv").textContent = anniv.label;
+          $("#badgeSub").textContent =
+            formatRupiah(totalSaved()) + " terkumpul";
+        }
+
+        function renderStats() {
+          $("#statTotal").textContent = formatRupiah(totalSaved());
+          $("#statCount").textContent = state.savings.length;
+        }
+
+        function renderSavers() {
+          const all = totalSaved();
+
+          $("#savers").innerHTML = ["f", "m"]
+            .map((who) => {
+              const subtotal = totalSaved(who);
+              const share = all ? (subtotal / all) * 100 : 0;
+              const name = escapeHtml(state.names[who]);
+
+              return `
+        <div class="card">
+          <div class="tag">Penabung</div>
+          <h3 class="saver-head">${avatar(who)} ${name}</h3>
+          <div class="value" style="margin-top:8px">${formatRupiah(subtotal)}</div>
+          <div class="progress">
+            <i style="width:${share}%"></i>
+          </div>
+          <div class="note" style="margin-top:4px">
+            ${share.toFixed(0)}% dari total tabungan
+          </div>
+          <div class="form">
+            <input class="field" type="number" min="1" step="any"
+              inputmode="numeric" placeholder="Nominal (Rp)"
+              data-amount="${who}" aria-label="Nominal tabungan ${name}">
+            <input class="field" type="text" maxlength="60"
+              placeholder="Catatan (opsional)" data-note="${who}"
+              aria-label="Catatan tabungan">
+            <button type="button" class="btn"
+              data-action="add-saving" data-who="${who}">
+              + Nabung
+            </button>
+          </div>
+        </div>`;
+            })
+            .join("");
+
+          const count = (who) =>
+            state.savings.filter((s) => s.who === who).length;
+
+          const filters = [
+            ["all", `Semua · ${state.savings.length}`],
+            ["f", `${state.names.f} · ${count("f")}`],
+            ["m", `${state.names.m} · ${count("m")}`],
+          ];
+
+          $("#filters").innerHTML = filters
+            .map(
+              ([key, text]) => `
+      <button type="button"
+        class="chip ${activeFilter === key ? "is-active" : ""}"
+        data-action="filter" data-filter="${key}">
+        ${escapeHtml(text)}
+      </button>
+    `,
+            )
+            .join("");
+        }
+
+        function renderHistory() {
+          const rows = state.savings
+            .filter((s) => activeFilter === "all" || s.who === activeFilter)
+            .slice()
+            .reverse();
+
+          $("#history").innerHTML = rows.length
+            ? rows
+                .map(
+                  (s) => `
+          <div class="item">
+            ${avatar(s.who)}
+            <div class="item-text">
+              <b>+ ${formatRupiah(s.amount)}</b>
+              <small>
+                ${escapeHtml(state.names[s.who])} ·
+                ${escapeHtml(s.date || "")}
+                ${s.note ? " · " + escapeHtml(s.note) : ""}
+              </small>
+            </div>
+            <button type="button" class="item-remove"
+              data-action="remove-saving" data-id="${escapeHtml(s.id)}">
+              Hapus
+            </button>
+          </div>
+        `,
+                )
+                .join("")
+            : '<div class="empty">Belum ada tabungan. Mulai dari nominal kecil, yang penting rutin.</div>';
+        }
+
+        function renderQuestions() {
+          $("#questions").innerHTML = ["m", "f"]
+            .map((who) => {
+              const question = currentQuestion(who);
+              const saved = state.answers[`${who}|${question}`] || "";
+
+              return `
+        <div class="card">
+          <div class="tag">Pertanyaan untuk</div>
+          <h3 class="saver-head">${avatar(who)} ${escapeHtml(state.names[who])}</h3>
+          <div class="question">${escapeHtml(question)}</div>
+          <div class="form">
+            <textarea class="field" rows="3" data-answer="${who}"
+              placeholder="Tulis jawabanmu dengan jujur...">${escapeHtml(saved)}</textarea>
+            <div class="btn-row">
+              <button type="button" class="btn"
+                data-action="save-answer" data-who="${who}">
+                Simpan jawaban
+              </button>
+              <button type="button" class="btn btn-soft"
+                data-action="next-question" data-who="${who}">
+                Pertanyaan lain
+              </button>
+            </div>
+          </div>
+        </div>`;
+            })
+            .join("");
+
+          const entries = Object.entries(state.answers).filter(
+            ([, text]) => text,
+          );
+
+          $("#answers").innerHTML = entries.length
+            ? entries
+                .map(([key, text]) => {
+                  const [who, ...rest] = key.split("|");
+                  return `
+            <div class="item">
+              ${avatar(who)}
+              <div class="item-text">
+                <b>${escapeHtml(rest.join("|"))}</b>
+                <small>${escapeHtml(state.names[who])}: ${escapeHtml(text)}</small>
+              </div>
+            </div>`;
+                })
+                .join("")
+            : '<div class="empty">Belum ada jawaban. Pilih satu pertanyaan dan ceritakan isi hatimu.</div>';
+        }
+
+        function renderAnniversary(anniv) {
+          $("#annivTitle").textContent = anniv.label;
+
+          $("#counter").innerHTML = [
+            [anniv.years, "Tahun"],
+            [anniv.months, "Bulan"],
+            [anniv.days, "Hari"],
+            [anniv.totalDays.toLocaleString("id-ID"), "Total hari"],
+          ]
+            .map(
+              ([value, text]) =>
+                `<div><b>${value}</b><small>${text}</small></div>`,
+            )
+            .join("");
+
+          $("#barAnniv").style.width = anniv.percent + "%";
+
+          $("#annivNote").textContent =
+            `${anniv.daysLeft} hari lagi menuju ` +
+            `${formatDate(anniv.next, {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            })}`;
+
+          $("#milestones").innerHTML = MILESTONE_DAYS.map((d) => {
+            const done = anniv.totalDays >= d;
+            return `<span class="${done ? "is-done" : ""}">
+        ${done ? "✓" : "○"} ${d} hari
+      </span>`;
+          }).join("");
+
+          $("#startDate").value = state.startDate;
+        }
+
+        function renderAll() {
+          const anniv = calcAnniversary();
+          renderHero(anniv);
+          renderStats();
+          renderSavers();
+          renderHistory();
+          renderQuestions();
+          renderAnniversary(anniv);
+        }
+
+        function switchTab(tab) {
+          $$(".tab").forEach((btn) =>
+            btn.classList.toggle("is-active", btn.dataset.tab === tab),
+          );
+
+          $$(".pane").forEach((pane) =>
+            pane.classList.toggle("is-active", pane.id === "pane-" + tab),
+          );
+
+          if (tab === "anniv") {
+            window.scrollTo({
+              top: $(".tabs").offsetTop - 10,
+              behavior: "smooth",
+            });
+          }
+        }
+
+        function addSaving(who) {
+          const amountInput = $(`[data-amount="${who}"]`);
+          const noteInput = $(`[data-note="${who}"]`);
+          const amount = Number(amountInput.value);
+
+          if (!Number.isFinite(amount) || amount <= 0) {
+            showToast("Isi nominal tabungan dulu ya");
+            return;
+          }
+
+          state.savings.push({
+            id: `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`,
+            who,
+            amount,
+            note: noteInput.value.trim(),
+            date: formatDate(new Date(), {
+              day: "numeric",
+              month: "short",
+              year: "numeric",
+            }),
+          });
+
+          Storage.save();
+          renderAll();
+
+          showToast(
+            `Hebat! ${state.names[who]} berhasil menabung ${formatRupiah(amount)}. Sedikit demi sedikit, impian kalian semakin dekat!`,
+          );
+        }
+
+        function removeSaving(id) {
+          const index = state.savings.findIndex(
+            (s) => String(s.id) === String(id),
+          );
+
+          if (index === -1) {
+            showToast("Catatan tabungan tidak ditemukan");
+            return;
+          }
+
+          if (!confirm("Yakin ingin menghapus catatan tabungan ini?")) {
+            return;
+          }
+
+          state.savings.splice(index, 1);
+          Storage.save();
+          renderAll();
+
+          showToast("Catatan tabungan berhasil dihapus");
+        }
+
+        function saveAnswer(who) {
+          const key = `${who}|${currentQuestion(who)}`;
+          const text = $(`[data-answer="${who}"]`).value.trim();
+
+          if (text) state.answers[key] = text;
+          else delete state.answers[key];
+
+          Storage.save();
+          renderQuestions();
+          showToast("Jawaban berhasil disimpan");
+        }
+
+        function nextQuestion(who) {
+          const total = QUESTIONS[who].length;
+          let next;
+
+          do {
+            next = Math.floor(Math.random() * total);
+          } while (next === state.questionIndex[who] % total && total > 1);
+
+          state.questionIndex[who] = next;
+          Storage.save();
+          renderQuestions();
+        }
+
+        const actions = {
+          tab: (el) => switchTab(el.dataset.tab),
+          "add-saving": (el) => addSaving(el.dataset.who),
+          "remove-saving": (el) => removeSaving(el.dataset.id),
+
+          filter: (el) => {
+            activeFilter = el.dataset.filter;
+            renderSavers();
+            renderHistory();
+          },
+
+          "save-answer": (el) => saveAnswer(el.dataset.who),
+          "next-question": (el) => nextQuestion(el.dataset.who),
+        };
+
+        document.addEventListener("click", (event) => {
+          const el = event.target.closest("[data-action]");
+          if (!el) return;
+
+          const handler = actions[el.dataset.action];
+          if (handler) {
+            event.preventDefault();
+            handler(el, event);
+          }
+        });
+
+        $("#startDate").addEventListener("change", (event) => {
+          if (!event.target.value) return;
+
+          state.startDate = event.target.value;
+          Storage.save();
+          renderAll();
+        });
+
+        [
+          ["#nameF", "f", "Aldi"],
+          ["#nameM", "m", "Malla"],
+        ].forEach(([selector, who, fallback]) => {
+          const el = $(selector);
+
+          el.addEventListener("blur", () => {
+            state.names[who] = el.textContent.trim().slice(0, 20) || fallback;
+
+            Storage.save();
+            renderAll();
+          });
+
+          el.addEventListener("keydown", (event) => {
+            if (event.key === "Enter") {
+              event.preventDefault();
+              el.blur();
+            }
+          });
+        });
+
+        renderAll();
+      })();
+    </script>
+  </body>
+</html>
