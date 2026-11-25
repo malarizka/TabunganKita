@@ -714,683 +714,687 @@
     </style>
   </head>
 
-  <body>
-    <!-- LOGIN -->
-    <section class="auth-screen" id="loginScreen">
-      <div class="auth-card">
-        <h1>Wedding</h1>
-        <p>Masuk untuk membuka tabungan kita bersama.</p>
+<body>
+  <!-- LOGIN -->
+  <section class="auth-screen" id="loginScreen">
+    <div class="auth-card">
+      <h1>Wedding</h1>
+      <p>Masuk untuk membuka tabungan kita bersama.</p>
 
-        <form id="loginForm">
-          <div>
-            <label for="loginEmail">Email</label>
-            <input
-              type="email"
-              id="loginEmail"
-              placeholder="Masukkan email"
-              required
-              autocomplete="username"
-            />
+      <form id="loginForm">
+        <div>
+          <label for="loginEmail">Email</label>
+          <input
+            type="email"
+            id="loginEmail"
+            placeholder="Masukkan email"
+            required
+            autocomplete="username"
+          />
+        </div>
+
+        <div>
+          <label for="loginPassword">Password</label>
+          <input
+            type="password"
+            id="loginPassword"
+            placeholder="Masukkan password"
+            required
+            autocomplete="current-password"
+          />
+        </div>
+
+        <button type="submit" class="btn" id="loginButton">
+          Masuk
+        </button>
+      </form>
+
+      <div class="auth-error" id="loginError"></div>
+    </div>
+  </section>
+
+  <!-- WEBSITE UTAMA -->
+  <div class="wrap" id="appShell" hidden>
+    <div class="topbar" style="gap: 10px; align-items: center; flex-wrap: wrap">
+      <span class="saved-badge" id="saveStatus">Tersimpan online</span>
+      <button class="btn btn-soft" id="logoutButton" type="button">
+        Keluar
+      </button>
+    </div>
+
+    <header class="hero">
+      <div>
+        <h1 class="hero-title">Wedding</h1>
+        <div class="hero-subtitle">ORGANIZER</div>
+
+        <div class="couple-names">
+          <span id="nameF" contenteditable="true" spellcheck="false">Aldi</span>
+          &amp;
+          <span id="nameM" contenteditable="true" spellcheck="false">Malla</span>
+        </div>
+
+        <div class="hero-meta">
+          <span>Jadian 4 September 2025</span>
+          <span>Klik nama untuk mengubah</span>
+        </div>
+
+        <div class="hero-actions">
+          <div class="days-left">
+            <b id="daysLeft">0</b>
+            <small>hari menuju aniv berikutnya</small>
           </div>
+          <button class="btn-ghost" data-action="tab" data-tab="anniv">
+            Lihat anniversary
+          </button>
+        </div>
 
-          <div>
-            <label for="loginPassword">Password</label>
-            <input
-              type="password"
-              id="loginPassword"
-              placeholder="Masukkan password"
-              required
-              autocomplete="current-password"
+        <div class="hero-anniv" id="heroAnniv"></div>
+      </div>
+
+      <div class="hero-badge">
+        <div>
+          <svg viewBox="0 0 120 70" width="130" aria-hidden="true">
+            <circle
+              cx="45"
+              cy="35"
+              r="26"
+              fill="none"
+              stroke="#c9a063"
+              stroke-width="5"
             />
-          </div>
+            <circle
+              cx="75"
+              cy="35"
+              r="26"
+              fill="none"
+              stroke="#6e1a30"
+              stroke-width="5"
+            />
+          </svg>
+          <strong>Menabung bersama</strong>
+          <small id="badgeSub"></small>
+        </div>
+      </div>
+    </header>
 
-          <button type="submit" class="btn" id="loginButton">Masuk</button>
-        </form>
+    <section class="stats">
+      <div class="card">
+        <div class="label">Total tabungan bersama</div>
+        <div class="value" id="statTotal"></div>
+        <div class="note">Jumlah uang yang sudah kalian kumpulkan</div>
+      </div>
 
-        <div class="auth-error" id="loginError"></div>
+      <div class="card">
+        <div class="label">Jumlah menabung</div>
+        <div class="value" id="statCount"></div>
+        <div class="note">Total catatan tabungan kalian</div>
       </div>
     </section>
 
-    <!-- WEBSITE UTAMA -->
-    <div class="wrap" id="appShell" hidden>
-      <div
-        class="topbar"
-        style="gap: 10px; align-items: center; flex-wrap: wrap"
-      >
-        <span class="saved-badge" id="saveStatus">Tersimpan online</span>
-        <button class="btn btn-soft" id="logoutButton" type="button">
-          Keluar
-        </button>
+    <nav class="tabs">
+      <button class="tab is-active" data-action="tab" data-tab="savings">
+        Tabungan
+      </button>
+      <button class="tab" data-action="tab" data-tab="questions">
+        Tanya Pasangan
+      </button>
+      <button class="tab" data-action="tab" data-tab="anniv">
+        Anniversary
+      </button>
+    </nav>
+
+    <section class="pane is-active" id="pane-savings">
+      <div class="grid-2" id="savers"></div>
+      <div class="chips" id="filters"></div>
+      <div class="list" id="history"></div>
+    </section>
+
+    <section class="pane" id="pane-questions">
+      <div class="grid-2" id="questions"></div>
+      <div class="chips">
+        <span class="section-title">Jawaban yang tersimpan</span>
       </div>
+      <div class="list" id="answers"></div>
+    </section>
 
-      <header class="hero">
-        <div>
-          <h1 class="hero-title">Wedding</h1>
-          <div class="hero-subtitle">ORGANIZER</div>
+    <section class="pane" id="pane-anniv">
+      <div class="card">
+        <div class="tag">Perjalanan cinta kita</div>
+        <h2 class="anniv-title" id="annivTitle"></h2>
+        <div class="counter" id="counter"></div>
 
-          <div class="couple-names">
-            <span id="nameF" contenteditable="true" spellcheck="false"
-              >Aldi</span
-            >
-            &amp;
-            <span id="nameM" contenteditable="true" spellcheck="false"
-              >Malla</span
-            >
-          </div>
-
-          <div class="hero-meta">
-            <span>Jadian 4 September 2025</span>
-            <span>Klik nama untuk mengubah</span>
-          </div>
-
-          <div class="hero-actions">
-            <div class="days-left">
-              <b id="daysLeft">0</b>
-              <small>hari menuju aniv berikutnya</small>
-            </div>
-            <button class="btn-ghost" data-action="tab" data-tab="anniv">
-              Lihat anniversary
-            </button>
-          </div>
-
-          <div class="hero-anniv" id="heroAnniv"></div>
+        <div class="label">Menuju anniversary berikutnya</div>
+        <div class="progress" style="margin-top: 6px">
+          <i id="barAnniv"></i>
         </div>
+        <div class="note" id="annivNote" style="margin-top: 6px"></div>
 
-        <div class="hero-badge">
-          <div>
-            <svg viewBox="0 0 120 70" width="130" aria-hidden="true">
-              <circle
-                cx="45"
-                cy="35"
-                r="26"
-                fill="none"
-                stroke="#c9a063"
-                stroke-width="5"
-              />
-              <circle
-                cx="75"
-                cy="35"
-                r="26"
-                fill="none"
-                stroke="#6e1a30"
-                stroke-width="5"
-              />
-            </svg>
-            <strong>Menabung bersama</strong>
-            <small id="badgeSub"></small>
-          </div>
+        <div class="milestones" id="milestones"></div>
+
+        <div class="date-picker">
+          <label class="label" for="startDate">Tanggal jadian</label>
+          <input class="field" type="date" id="startDate" />
         </div>
-      </header>
+      </div>
+    </section>
+  </div>
 
-      <section class="stats">
-        <div class="card">
-          <div class="label">Total tabungan bersama</div>
-          <div class="value" id="statTotal"></div>
-          <div class="note">Jumlah uang yang sudah kalian kumpulkan</div>
-        </div>
-<<<<<<< HEAD
+  <div class="toast" id="toast" role="status"></div>
 
-=======
->>>>>>> origin/main
-        <div class="card">
-          <div class="label">Jumlah menabung</div>
-          <div class="value" id="statCount"></div>
-          <div class="note">Total catatan tabungan kalian</div>
-        </div>
-      </section>
+  <script>
+    "use strict";
 
-      <nav class="tabs">
-        <button class="tab is-active" data-action="tab" data-tab="savings">
-          Tabungan
-        </button>
-        <button class="tab" data-action="tab" data-tab="questions">
-          Tanya Pasangan
-        </button>
-        <button class="tab" data-action="tab" data-tab="anniv">
-          Anniversary
-        </button>
-      </nav>
+    // ==========================================
+    // KONFIGURASI SUPABASE
+    // ==========================================
 
-      <section class="pane is-active" id="pane-savings">
-        <div class="grid-2" id="savers"></div>
-        <div class="chips" id="filters"></div>
-        <div class="list" id="history"></div>
-      </section>
+    const SUPABASE_URL = "https://yptgtahuksenvhfrnjxn.supabase.co";
 
-      <section class="pane" id="pane-questions">
-        <div class="grid-2" id="questions"></div>
-        <div class="chips">
-          <span class="section-title">Jawaban yang tersimpan</span>
-        </div>
-        <div class="list" id="answers"></div>
-      </section>
+    const SUPABASE_KEY =
+      "sb_publishable_GXiI4VH-O4GAwln0EohTqw_Ne0pUjs8";
 
-      <section class="pane" id="pane-anniv">
-        <div class="card">
-          <div class="tag">Perjalanan cinta kita</div>
-          <h2 class="anniv-title" id="annivTitle"></h2>
-          <div class="counter" id="counter"></div>
+    const supabaseClient = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
+    );
 
-          <div class="label">Menuju anniversary berikutnya</div>
-          <div class="progress" style="margin-top: 6px">
-            <i id="barAnniv"></i>
-          </div>
-          <div class="note" id="annivNote" style="margin-top: 6px"></div>
+    // ==========================================
+    // DATA WEBSITE
+    // ==========================================
 
-          <div class="milestones" id="milestones"></div>
+    const MILESTONE_DAYS = [100, 200, 365, 500, 730, 1000];
 
-          <div class="date-picker">
-            <label class="label" for="startDate">Tanggal jadian</label>
-            <input class="field" type="date" id="startDate" />
-          </div>
-        </div>
-      </section>
-    </div>
+    const QUESTIONS = {
+      m: [
+        "Apa yang bikin kamu yakin mau menikah denganku?",
+        "Apa kenangan kita yang paling bikin kamu tersenyum?",
+        "Apa yang ingin kamu perbaiki dari dirimu untuk kita?",
+        "Gimana kamu membayangkan hari-hari biasa kita setelah menikah?",
+        "Pekerjaan rumah apa yang paling ingin kamu bagi dua?",
+        "Apa yang aku lakukan yang bikin kamu merasa tenang?",
+        "Apa tujuan keuangan terbesar kita menurutmu?",
+        "Tempat apa yang ingin kamu kunjungi bersamaku?",
+        "Tradisi kecil apa yang ingin kita mulai?",
+        "Kalau aku lagi sedih, kamu ingin aku diperlakukan seperti apa?",
+      ],
 
-    <div class="toast" id="toast" role="status"></div>
+      f: [
+        "Apa momen paling berkesan sejak kita jadian?",
+        "Apa hal pertama yang bikin kamu tertarik sama aku?",
+        "Rumah impian kita menurutmu seperti apa?",
+        "Berapa anak yang kamu mau, dan siapa nama favoritmu?",
+        "Apa yang paling kamu khawatirkan soal pernikahan?",
+        "Kebiasaanku yang mana yang paling kamu suka?",
+        "Apa mimpi terbesarmu 5 tahun lagi?",
+        "Dengan cara apa kamu merasa paling dicintai?",
+        "Honeymoon impianmu di mana?",
+        "Janji apa yang ingin kamu ucapkan di hari pernikahan kita?",
+      ],
+    };
 
-    <script>
-      "use strict";
+    const DEFAULT_STATE = {
+      names: {
+        f: "Aldi",
+        m: "Malla",
+      },
+      startDate: "2025-09-04",
+      savings: [],
+      answers: {},
+      questionIndex: {
+        f: 0,
+        m: 0,
+      },
+    };
 
-      // ==========================================
-      // KONFIGURASI SUPABASE
-      // ==========================================
+    const $ = (selector) => document.querySelector(selector);
+    const $$ = (selector) => document.querySelectorAll(selector);
 
-      const SUPABASE_URL = "https://yptgtahuksenvhfrnjxn.supabase.co";
+    let currentUser = null;
+    let activeFilter = "all";
+    let toastTimer = null;
+    let syncInterval = null;
 
-      const SUPABASE_KEY = "sb_publishable_GXiI4VH-O4GAwln0EohTqw_Ne0pUjs8";
+    const state = {
+      ...DEFAULT_STATE,
+      names: { ...DEFAULT_STATE.names },
+      savings: [],
+      answers: {},
+      questionIndex: { f: 0, m: 0 },
+    };
 
-      const supabaseClient = window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY,
-      );
+    // ==========================================
+    // FUNGSI DASAR
+    // ==========================================
 
-      // ==========================================
-      // DATA WEBSITE
-      // ==========================================
+    function formatRupiah(n) {
+      return "Rp" + Math.round(Number(n) || 0).toLocaleString("id-ID");
+    }
 
-      const MILESTONE_DAYS = [100, 200, 365, 500, 730, 1000];
+    function formatDate(date, options) {
+      return date.toLocaleDateString("id-ID", options);
+    }
 
-      const QUESTIONS = {
-        m: [
-          "Apa yang bikin kamu yakin mau menikah denganku?",
-          "Apa kenangan kita yang paling bikin kamu tersenyum?",
-          "Apa yang ingin kamu perbaiki dari dirimu untuk kita?",
-          "Gimana kamu membayangkan hari-hari biasa kita setelah menikah?",
-          "Pekerjaan rumah apa yang paling ingin kamu bagi dua?",
-          "Apa yang aku lakukan yang bikin kamu merasa tenang?",
-          "Apa tujuan keuangan terbesar kita menurutmu?",
-          "Tempat apa yang ingin kamu kunjungi bersamaku?",
-          "Tradisi kecil apa yang ingin kita mulai?",
-          "Kalau aku lagi sedih, kamu ingin aku diperlakukan seperti apa?",
-        ],
+    function escapeHtml(text) {
+      return String(text ?? "").replace(/[&<>"']/g, (c) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;",
+      })[c]);
+    }
 
-        f: [
-          "Apa momen paling berkesan sejak kita jadian?",
-          "Apa hal pertama yang bikin kamu tertarik sama aku?",
-          "Rumah impian kita menurutmu seperti apa?",
-          "Berapa anak yang kamu mau, dan siapa nama favoritmu?",
-          "Apa yang paling kamu khawatirkan soal pernikahan?",
-          "Kebiasaanku yang mana yang paling kamu suka?",
-          "Apa mimpi terbesarmu 5 tahun lagi?",
-          "Dengan cara apa kamu merasa paling dicintai?",
-          "Honeymoon impianmu di mana?",
-          "Janji apa yang ingin kamu ucapkan di hari pernikahan kita?",
-        ],
-      };
+    function showToast(message) {
+      const el = $("#toast");
 
-      const DEFAULT_STATE = {
-        names: {
-          f: "Aldi",
-          m: "Malla",
-        },
-        startDate: "2025-09-04",
-        savings: [],
-        answers: {},
-        questionIndex: {
-          f: 0,
-          m: 0,
-        },
-      };
+      el.textContent = message;
+      el.classList.add("is-visible");
 
-      const $ = (selector) => document.querySelector(selector);
-      const $$ = (selector) => document.querySelectorAll(selector);
+      clearTimeout(toastTimer);
 
-      let currentUser = null;
-      let activeFilter = "all";
-      let toastTimer = null;
-      let syncInterval = null;
+      toastTimer = setTimeout(() => {
+        el.classList.remove("is-visible");
+      }, 4000);
+    }
 
-      const state = {
-        ...DEFAULT_STATE,
-        names: { ...DEFAULT_STATE.names },
-        savings: [],
-        answers: {},
-        questionIndex: { f: 0, m: 0 },
-      };
+    function setSaveStatus(message) {
+      $("#saveStatus").textContent = message;
+    }
 
-      // ==========================================
-      // FUNGSI DASAR
-      // ==========================================
+    function currentQuestion(who) {
+      return QUESTIONS[who][
+        state.questionIndex[who] % QUESTIONS[who].length
+      ];
+    }
 
-      function formatRupiah(n) {
-        return "Rp" + Math.round(Number(n) || 0).toLocaleString("id-ID");
+    function totalSaved(who) {
+      return state.savings
+        .filter((s) => !who || s.who === who)
+        .reduce((sum, s) => sum + Number(s.amount || 0), 0);
+    }
+
+    function avatar(who) {
+      return `<span class="avatar ${who}">${escapeHtml(
+        (state.names[who] || "?")[0].toUpperCase()
+      )}</span>`;
+    }
+
+    // ==========================================
+    // LOGIN DAN PEMERIKSAAN AKUN
+    // ==========================================
+
+    async function checkMembership(user) {
+      const { data, error } = await supabaseClient
+        .from("couple_members")
+        .select("user_id")
+        .eq("user_id", user.id)
+        .maybeSingle();
+
+      if (error) {
+        throw error;
       }
 
-      function formatDate(date, options) {
-        return date.toLocaleDateString("id-ID", options);
+      return !!data;
+    }
+
+    async function showApplication(user) {
+      currentUser = user;
+
+      try {
+        const isMember = await checkMembership(user);
+
+        if (!isMember) {
+          await supabaseClient.auth.signOut();
+          currentUser = null;
+
+          $("#loginError").textContent =
+            "Akun ini tidak terdaftar sebagai anggota pasangan.";
+
+          return;
+        }
+
+        $("#loginScreen").hidden = true;
+        $("#appShell").hidden = false;
+
+        await loadCloudData();
+        startSync();
+
+      } catch (error) {
+        console.error(error);
+
+        $("#loginError").textContent =
+          "Gagal memuat data. Periksa koneksi internet atau pengaturan database.";
+
+        $("#loginScreen").hidden = false;
+        $("#appShell").hidden = true;
       }
+    }
 
-      function escapeHtml(text) {
-        return String(text ?? "").replace(
-          /[&<>"']/g,
-          (c) =>
-            ({
-              "&": "&amp;",
-              "<": "&lt;",
-              ">": "&gt;",
-              '"': "&quot;",
-              "'": "&#39;",
-            })[c],
-        );
-      }
+    $("#loginForm").addEventListener("submit", async (event) => {
+      event.preventDefault();
 
-      function showToast(message) {
-        const el = $("#toast");
+      const email = $("#loginEmail").value.trim();
+      const password = $("#loginPassword").value;
+      const button = $("#loginButton");
 
-        el.textContent = message;
-        el.classList.add("is-visible");
+      $("#loginError").textContent = "";
+      button.disabled = true;
+      button.textContent = "Memproses...";
 
-        clearTimeout(toastTimer);
-
-        toastTimer = setTimeout(() => {
-          el.classList.remove("is-visible");
-        }, 4000);
-      }
-
-      function setSaveStatus(message) {
-        $("#saveStatus").textContent = message;
-      }
-
-      function currentQuestion(who) {
-        return QUESTIONS[who][state.questionIndex[who] % QUESTIONS[who].length];
-      }
-
-      function totalSaved(who) {
-        return state.savings
-          .filter((s) => !who || s.who === who)
-          .reduce((sum, s) => sum + Number(s.amount || 0), 0);
-      }
-
-      function avatar(who) {
-        return `<span class="avatar ${who}">${escapeHtml(
-          (state.names[who] || "?")[0].toUpperCase(),
-        )}</span>`;
-      }
-
-      // ==========================================
-      // LOGIN DAN PEMERIKSAAN AKUN
-      // ==========================================
-
-      async function checkMembership(user) {
-        const { data, error } = await supabaseClient
-          .from("couple_members")
-          .select("user_id")
-          .eq("user_id", user.id)
-          .maybeSingle();
+      try {
+        const { data, error } = await supabaseClient.auth.signInWithPassword({
+          email,
+          password,
+        });
 
         if (error) {
           throw error;
         }
 
-        return !!data;
+        await showApplication(data.user);
+
+      } catch (error) {
+        console.error(error);
+
+        $("#loginError").textContent =
+          "Email atau password salah. Silakan periksa kembali.";
+
+      } finally {
+        button.disabled = false;
+        button.textContent = "Masuk";
+      }
+    });
+
+    $("#logoutButton").addEventListener("click", async () => {
+      if (!confirm("Yakin ingin keluar dari akun?")) {
+        return;
       }
 
-      async function showApplication(user) {
-        currentUser = user;
-
-        try {
-          const isMember = await checkMembership(user);
-
-          if (!isMember) {
-            await supabaseClient.auth.signOut();
-            currentUser = null;
-
-            $("#loginError").textContent =
-              "Akun ini tidak terdaftar sebagai anggota pasangan.";
-
-            return;
-          }
-
-          $("#loginScreen").hidden = true;
-          $("#appShell").hidden = false;
-
-          await loadCloudData();
-          startSync();
-        } catch (error) {
-          console.error(error);
-
-          $("#loginError").textContent =
-            "Gagal memuat data. Periksa koneksi internet atau pengaturan database.";
-
-          $("#loginScreen").hidden = false;
-          $("#appShell").hidden = true;
-        }
-      }
-
-      $("#loginForm").addEventListener("submit", async (event) => {
-        event.preventDefault();
-
-        const email = $("#loginEmail").value.trim();
-        const password = $("#loginPassword").value;
-        const button = $("#loginButton");
-
-        $("#loginError").textContent = "";
-        button.disabled = true;
-        button.textContent = "Memproses...";
-
-        try {
-          const { data, error } = await supabaseClient.auth.signInWithPassword({
-            email,
-            password,
-          });
-
-          if (error) {
-            throw error;
-          }
-
-          await showApplication(data.user);
-        } catch (error) {
-          console.error(error);
-
-          $("#loginError").textContent =
-            "Email atau password salah. Silakan periksa kembali.";
-        } finally {
-          button.disabled = false;
-          button.textContent = "Masuk";
-        }
-      });
-
-      $("#logoutButton").addEventListener("click", async () => {
-        if (!confirm("Yakin ingin keluar dari akun?")) {
-          return;
-        }
-
-        try {
-          stopSync();
-
-          const { error } = await supabaseClient.auth.signOut();
-
-          if (error) {
-            throw error;
-          }
-
-          currentUser = null;
-          state.savings = [];
-          state.answers = {};
-
-          $("#appShell").hidden = true;
-          $("#loginScreen").hidden = false;
-          $("#loginPassword").value = "";
-          $("#loginError").textContent = "";
-        } catch (error) {
-          console.error(error);
-          showToast("Gagal keluar dari akun.");
-        }
-      });
-
-      // ==========================================
-      // MENGAMBIL DATA DARI SUPABASE
-      // ==========================================
-
-      async function loadCloudData() {
-        if (!currentUser) return;
-
-        setSaveStatus("Memuat data...");
-
-        const [savingsResult, answersResult, settingsResult] =
-          await Promise.all([
-            supabaseClient
-              .from("savings")
-              .select("*")
-              .order("created_at", { ascending: true }),
-
-            supabaseClient.from("answers").select("*"),
-
-            supabaseClient
-              .from("couple_settings")
-              .select("*")
-              .eq("id", 1)
-              .maybeSingle(),
-          ]);
-
-        if (savingsResult.error) throw savingsResult.error;
-        if (answersResult.error) throw answersResult.error;
-        if (settingsResult.error) throw settingsResult.error;
-
-        // Jika pengaturan belum ada, buat data awal.
-        let settings = settingsResult.data;
-
-        if (!settings) {
-          const { data, error } = await supabaseClient
-            .from("couple_settings")
-            .upsert({
-              id: 1,
-              name_f: "Aldi",
-              name_m: "Malla",
-              start_date: "2025-09-04",
-            })
-            .select()
-            .single();
-
-          if (error) throw error;
-
-          settings = data;
-        }
-
-        // Memasukkan data tabungan dari database.
-        state.savings = (savingsResult.data || [])
-          .filter((item) => ["f", "m"].includes(item.who))
-          .map((item) => ({
-            id: String(item.id),
-            who: item.who,
-            amount: Number(item.amount) || 0,
-            note: item.note || "",
-            date: item.created_at
-              ? formatDate(new Date(item.created_at), {
-                  day: "numeric",
-                  month: "short",
-                  year: "numeric",
-                })
-              : "",
-          }));
-
-        // Memasukkan jawaban dari database.
-        state.answers = {};
-
-        (answersResult.data || []).forEach((item) => {
-          state.answers[`${item.who}|${item.question}`] = item.answer || "";
-        });
-
-        // Memasukkan pengaturan pasangan.
-        state.names.f = settings.name_f || "Aldi";
-        state.names.m = settings.name_m || "Malla";
-        state.startDate = settings.start_date || "2025-09-04";
-
-        renderAll();
-
-        setSaveStatus("Tersimpan online");
-      }
-
-      // ==========================================
-      // MENYIMPAN PENGATURAN PASANGAN
-      // ==========================================
-
-      async function saveSettings() {
-        if (!currentUser) return;
-
-        const data = {
-          id: 1,
-          name_f: state.names.f,
-          name_m: state.names.m,
-          start_date: state.startDate,
-        };
-
-        setSaveStatus("Menyimpan...");
-
-        const { error } = await supabaseClient
-          .from("couple_settings")
-          .upsert(data);
-
-        if (error) {
-          console.error(error);
-          setSaveStatus("Gagal menyimpan");
-          showToast("Pengaturan gagal disimpan.");
-          return;
-        }
-
-        setSaveStatus("Tersimpan online");
-      }
-
-      // ==========================================
-      // SINKRONISASI DATA ANTAR PERANGKAT
-      // ==========================================
-
-      function startSync() {
+      try {
         stopSync();
 
-        syncInterval = setInterval(async () => {
-          if (!currentUser) return;
+        const { error } = await supabaseClient.auth.signOut();
 
-          // Tidak memperbarui tampilan ketika sedang mengetik.
-          const active = document.activeElement;
+        if (error) {
+          throw error;
+        }
 
-          if (
-            active &&
-            (active.tagName === "INPUT" ||
-              active.tagName === "TEXTAREA" ||
-              active.isContentEditable)
-          ) {
-            return;
-          }
+        currentUser = null;
+        state.savings = [];
+        state.answers = {};
 
-          try {
-            await loadCloudData();
-          } catch (error) {
-            console.error("Sinkronisasi gagal:", error);
-            setSaveStatus("Koneksi bermasalah");
-          }
-        }, 5000);
+        $("#appShell").hidden = true;
+        $("#loginScreen").hidden = false;
+        $("#loginPassword").value = "";
+        $("#loginError").textContent = "";
+
+      } catch (error) {
+        console.error(error);
+        showToast("Gagal keluar dari akun.");
+      }
+    });
+
+    // ==========================================
+    // MENGAMBIL DATA DARI SUPABASE
+    // ==========================================
+
+    async function loadCloudData() {
+      if (!currentUser) return;
+
+      setSaveStatus("Memuat data...");
+
+      const [savingsResult, answersResult, settingsResult] =
+        await Promise.all([
+          supabaseClient
+            .from("savings")
+            .select("*")
+            .order("created_at", { ascending: true }),
+
+          supabaseClient
+            .from("answers")
+            .select("*"),
+
+          supabaseClient
+            .from("couple_settings")
+            .select("*")
+            .eq("id", 1)
+            .maybeSingle(),
+        ]);
+
+      if (savingsResult.error) throw savingsResult.error;
+      if (answersResult.error) throw answersResult.error;
+      if (settingsResult.error) throw settingsResult.error;
+
+      // Jika pengaturan belum ada, buat data awal.
+      let settings = settingsResult.data;
+
+      if (!settings) {
+        const { data, error } = await supabaseClient
+          .from("couple_settings")
+          .upsert({
+            id: 1,
+            name_f: "Aldi",
+            name_m: "Malla",
+            start_date: "2025-09-04",
+          })
+          .select()
+          .single();
+
+        if (error) throw error;
+
+        settings = data;
       }
 
-      function stopSync() {
-        if (syncInterval) {
-          clearInterval(syncInterval);
-          syncInterval = null;
-        }
+      // Memasukkan data tabungan dari database.
+      state.savings = (savingsResult.data || [])
+        .filter((item) => ["f", "m"].includes(item.who))
+        .map((item) => ({
+          id: String(item.id),
+          who: item.who,
+          amount: Number(item.amount) || 0,
+          note: item.note || "",
+          date: item.created_at
+            ? formatDate(new Date(item.created_at), {
+                day: "numeric",
+                month: "short",
+                year: "numeric",
+              })
+            : "",
+        }));
+
+      // Memasukkan jawaban dari database.
+      state.answers = {};
+
+      (answersResult.data || []).forEach((item) => {
+        state.answers[`${item.who}|${item.question}`] = item.answer || "";
+      });
+
+      // Memasukkan pengaturan pasangan.
+      state.names.f = settings.name_f || "Aldi";
+      state.names.m = settings.name_m || "Malla";
+      state.startDate = settings.start_date || "2025-09-04";
+
+      renderAll();
+
+      setSaveStatus("Tersimpan online");
+    }
+
+    // ==========================================
+    // MENYIMPAN PENGATURAN PASANGAN
+    // ==========================================
+
+    async function saveSettings() {
+      if (!currentUser) return;
+
+      const data = {
+        id: 1,
+        name_f: state.names.f,
+        name_m: state.names.m,
+        start_date: state.startDate,
+      };
+
+      setSaveStatus("Menyimpan...");
+
+      const { error } = await supabaseClient
+        .from("couple_settings")
+        .upsert(data);
+
+      if (error) {
+        console.error(error);
+        setSaveStatus("Gagal menyimpan");
+        showToast("Pengaturan gagal disimpan.");
+        return;
       }
 
-      // ==========================================
-      // PERHITUNGAN ANNIVERSARY
-      // ==========================================
+      setSaveStatus("Tersimpan online");
+    }
 
-      function calcAnniversary() {
-        const start = new Date(state.startDate + "T00:00:00");
-        const today = new Date();
+    // ==========================================
+    // SINKRONISASI DATA ANTAR PERANGKAT
+    // ==========================================
 
-        today.setHours(0, 0, 0, 0);
+    function startSync() {
+      stopSync();
 
-        if (start > today) {
-          return {
-            years: 0,
-            months: 0,
-            days: 0,
-            label: "Tanggal jadian belum tiba",
-            next: start,
-            totalDays: 0,
-            daysLeft: Math.ceil((start - today) / 86400000),
-            percent: 0,
-          };
+      syncInterval = setInterval(async () => {
+        if (!currentUser) return;
+
+        // Tidak memperbarui tampilan ketika sedang mengetik.
+        const active = document.activeElement;
+
+        if (
+          active &&
+          (
+            active.tagName === "INPUT" ||
+            active.tagName === "TEXTAREA" ||
+            active.isContentEditable
+          )
+        ) {
+          return;
         }
 
-        let years = today.getFullYear() - start.getFullYear();
-        let months = today.getMonth() - start.getMonth();
-        let days = today.getDate() - start.getDate();
-
-        if (days < 0) {
-          months--;
-
-          days += new Date(today.getFullYear(), today.getMonth(), 0).getDate();
+        try {
+          await loadCloudData();
+        } catch (error) {
+          console.error("Sinkronisasi gagal:", error);
+          setSaveStatus("Koneksi bermasalah");
         }
+      }, 5000);
+    }
 
-        if (months < 0) {
-          years--;
-          months += 12;
-        }
+    function stopSync() {
+      if (syncInterval) {
+        clearInterval(syncInterval);
+        syncInterval = null;
+      }
+    }
 
-        const previous = new Date(
-          start.getFullYear() + years,
-          start.getMonth(),
-          start.getDate(),
-        );
+    // ==========================================
+    // PERHITUNGAN ANNIVERSARY
+    // ==========================================
 
-        const next = new Date(
-          start.getFullYear() + years + 1,
-          start.getMonth(),
-          start.getDate(),
-        );
+    function calcAnniversary() {
+      const start = new Date(state.startDate + "T00:00:00");
+      const today = new Date();
 
-        const label =
-          years > 0 && months === 0 && days === 0
-            ? `Selamat anniversary ke-${years} tahun!`
-            : years < 1
-              ? "Menuju anniversary ke-1 tahun"
-              : `Aniv ke-${years} tahun menuju ${years + 1} tahun`;
+      today.setHours(0, 0, 0, 0);
 
+      if (start > today) {
         return {
-          years,
-          months,
-          days,
-          label,
-          next,
-          totalDays: Math.floor((today - start) / 86400000),
-          daysLeft: Math.round((next - today) / 86400000),
-          percent: Math.min(
-            100,
-            Math.max(0, ((today - previous) / (next - previous)) * 100),
-          ),
+          years: 0,
+          months: 0,
+          days: 0,
+          label: "Tanggal jadian belum tiba",
+          next: start,
+          totalDays: 0,
+          daysLeft: Math.ceil((start - today) / 86400000),
+          percent: 0,
         };
       }
 
-      // ==========================================
-      // TAMPILAN WEBSITE
-      // ==========================================
+      let years = today.getFullYear() - start.getFullYear();
+      let months = today.getMonth() - start.getMonth();
+      let days = today.getDate() - start.getDate();
 
-      function renderHero(anniv) {
-        $("#nameF").textContent = state.names.f;
-        $("#nameM").textContent = state.names.m;
+      if (days < 0) {
+        months--;
 
-        $("#daysLeft").textContent = anniv.daysLeft;
-        $("#heroAnniv").textContent = anniv.label;
-
-        $("#badgeSub").textContent = formatRupiah(totalSaved()) + " terkumpul";
+        days += new Date(
+          today.getFullYear(),
+          today.getMonth(),
+          0
+        ).getDate();
       }
 
-      function renderStats() {
-        $("#statTotal").textContent = formatRupiah(totalSaved());
-        $("#statCount").textContent = state.savings.length;
+      if (months < 0) {
+        years--;
+        months += 12;
       }
 
-      function renderSavers() {
-        const all = totalSaved();
+      const previous = new Date(
+        start.getFullYear() + years,
+        start.getMonth(),
+        start.getDate()
+      );
 
-        $("#savers").innerHTML = ["f", "m"]
-          .map((who) => {
-            const subtotal = totalSaved(who);
-            const share = all ? (subtotal / all) * 100 : 0;
-            const name = escapeHtml(state.names[who]);
+      const next = new Date(
+        start.getFullYear() + years + 1,
+        start.getMonth(),
+        start.getDate()
+      );
 
-            return `
+      const label =
+        years > 0 && months === 0 && days === 0
+          ? `Selamat anniversary ke-${years} tahun!`
+          : years < 1
+            ? "Menuju anniversary ke-1 tahun"
+            : `Aniv ke-${years} tahun menuju ${years + 1} tahun`;
+
+      return {
+        years,
+        months,
+        days,
+        label,
+        next,
+        totalDays: Math.floor((today - start) / 86400000),
+        daysLeft: Math.round((next - today) / 86400000),
+        percent: Math.min(
+          100,
+          Math.max(0, ((today - previous) / (next - previous)) * 100)
+        ),
+      };
+    }
+
+    // ==========================================
+    // TAMPILAN WEBSITE
+    // ==========================================
+
+    function renderHero(anniv) {
+      $("#nameF").textContent = state.names.f;
+      $("#nameM").textContent = state.names.m;
+
+      $("#daysLeft").textContent = anniv.daysLeft;
+      $("#heroAnniv").textContent = anniv.label;
+
+      $("#badgeSub").textContent =
+        formatRupiah(totalSaved()) + " terkumpul";
+    }
+
+    function renderStats() {
+      $("#statTotal").textContent = formatRupiah(totalSaved());
+      $("#statCount").textContent = state.savings.length;
+    }
+
+    function renderSavers() {
+      const all = totalSaved();
+
+      $("#savers").innerHTML = ["f", "m"]
+        .map((who) => {
+          const subtotal = totalSaved(who);
+          const share = all ? (subtotal / all) * 100 : 0;
+          const name = escapeHtml(state.names[who]);
+
+          return `
             <div class="card">
               <div class="tag">Penabung</div>
 
@@ -1442,21 +1446,21 @@
               </div>
             </div>
           `;
-          })
-          .join("");
+        })
+        .join("");
 
-        const count = (who) =>
-          state.savings.filter((s) => s.who === who).length;
+      const count = (who) =>
+        state.savings.filter((s) => s.who === who).length;
 
-        const filters = [
-          ["all", `Semua · ${state.savings.length}`],
-          ["f", `${state.names.f} · ${count("f")}`],
-          ["m", `${state.names.m} · ${count("m")}`],
-        ];
+      const filters = [
+        ["all", `Semua · ${state.savings.length}`],
+        ["f", `${state.names.f} · ${count("f")}`],
+        ["m", `${state.names.m} · ${count("m")}`],
+      ];
 
-        $("#filters").innerHTML = filters
-          .map(
-            ([key, text]) => `
+      $("#filters").innerHTML = filters
+        .map(
+          ([key, text]) => `
             <button
               type="button"
               class="chip ${activeFilter === key ? "is-active" : ""}"
@@ -1465,21 +1469,21 @@
             >
               ${escapeHtml(text)}
             </button>
-          `,
-          )
-          .join("");
-      }
+          `
+        )
+        .join("");
+    }
 
-      function renderHistory() {
-        const rows = state.savings
-          .filter((s) => activeFilter === "all" || s.who === activeFilter)
-          .slice()
-          .reverse();
+    function renderHistory() {
+      const rows = state.savings
+        .filter((s) => activeFilter === "all" || s.who === activeFilter)
+        .slice()
+        .reverse();
 
-        $("#history").innerHTML = rows.length
-          ? rows
-              .map(
-                (s) => `
+      $("#history").innerHTML = rows.length
+        ? rows
+            .map(
+              (s) => `
                 <div class="item">
                   ${avatar(s.who)}
 
@@ -1502,19 +1506,19 @@
                     Hapus
                   </button>
                 </div>
-              `,
-              )
-              .join("")
-          : '<div class="empty">Belum ada tabungan. Mulai dari nominal kecil, yang penting rutin.</div>';
-      }
+              `
+            )
+            .join("")
+        : '<div class="empty">Belum ada tabungan. Mulai dari nominal kecil, yang penting rutin.</div>';
+    }
 
-      function renderQuestions() {
-        $("#questions").innerHTML = ["m", "f"]
-          .map((who) => {
-            const question = currentQuestion(who);
-            const saved = state.answers[`${who}|${question}`] || "";
+    function renderQuestions() {
+      $("#questions").innerHTML = ["m", "f"]
+        .map((who) => {
+          const question = currentQuestion(who);
+          const saved = state.answers[`${who}|${question}`] || "";
 
-            return `
+          return `
             <div class="card">
               <div class="tag">Pertanyaan untuk</div>
 
@@ -1556,19 +1560,19 @@
               </div>
             </div>
           `;
-          })
-          .join("");
+        })
+        .join("");
 
-        const entries = Object.entries(state.answers).filter(
-          ([, text]) => text,
-        );
+      const entries = Object.entries(state.answers).filter(
+        ([, text]) => text
+      );
 
-        $("#answers").innerHTML = entries.length
-          ? entries
-              .map(([key, text]) => {
-                const [who, ...rest] = key.split("|");
+      $("#answers").innerHTML = entries.length
+        ? entries
+            .map(([key, text]) => {
+              const [who, ...rest] = key.split("|");
 
-                return `
+              return `
                 <div class="item">
                   ${avatar(who)}
 
@@ -1581,164 +1585,171 @@
                   </div>
                 </div>
               `;
-              })
-              .join("")
-          : '<div class="empty">Belum ada jawaban. Pilih satu pertanyaan dan ceritakan isi hatimu.</div>';
-      }
+            })
+            .join("")
+        : '<div class="empty">Belum ada jawaban. Pilih satu pertanyaan dan ceritakan isi hatimu.</div>';
+    }
 
-      function renderAnniversary(anniv) {
-        $("#annivTitle").textContent = anniv.label;
+    function renderAnniversary(anniv) {
+      $("#annivTitle").textContent = anniv.label;
 
-        $("#counter").innerHTML = [
-          [anniv.years, "Tahun"],
-          [anniv.months, "Bulan"],
-          [anniv.days, "Hari"],
-          [anniv.totalDays.toLocaleString("id-ID"), "Total hari"],
-        ]
-          .map(
-            ([value, text]) =>
-              `<div><b>${value}</b><small>${text}</small></div>`,
-          )
-          .join("");
+      $("#counter").innerHTML = [
+        [anniv.years, "Tahun"],
+        [anniv.months, "Bulan"],
+        [anniv.days, "Hari"],
+        [anniv.totalDays.toLocaleString("id-ID"), "Total hari"],
+      ]
+        .map(
+          ([value, text]) =>
+            `<div><b>${value}</b><small>${text}</small></div>`
+        )
+        .join("");
 
-        $("#barAnniv").style.width = anniv.percent + "%";
+      $("#barAnniv").style.width = anniv.percent + "%";
 
-        $("#annivNote").textContent =
-          `${anniv.daysLeft} hari lagi menuju ` +
-          `${formatDate(anniv.next, {
-            day: "numeric",
-            month: "long",
-            year: "numeric",
-          })}`;
+      $("#annivNote").textContent =
+        `${anniv.daysLeft} hari lagi menuju ` +
+        `${formatDate(anniv.next, {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        })}`;
 
-        $("#milestones").innerHTML = MILESTONE_DAYS.map((d) => {
-          const done = anniv.totalDays >= d;
+      $("#milestones").innerHTML = MILESTONE_DAYS.map((d) => {
+        const done = anniv.totalDays >= d;
 
-          return `
+        return `
           <span class="${done ? "is-done" : ""}">
             ${done ? "✓" : "○"} ${d} hari
           </span>
         `;
-        }).join("");
+      }).join("");
 
-        $("#startDate").value = state.startDate;
-      }
+      $("#startDate").value = state.startDate;
+    }
 
-      function renderAll() {
-        const anniv = calcAnniversary();
+    function renderAll() {
+      const anniv = calcAnniversary();
 
-        renderHero(anniv);
-        renderStats();
-        renderSavers();
-        renderHistory();
-        renderQuestions();
-        renderAnniversary(anniv);
-      }
+      renderHero(anniv);
+      renderStats();
+      renderSavers();
+      renderHistory();
+      renderQuestions();
+      renderAnniversary(anniv);
+    }
 
-      // ==========================================
-      // TAB WEBSITE
-      // ==========================================
+    // ==========================================
+    // TAB WEBSITE
+    // ==========================================
 
-      function switchTab(tab) {
-        $$(".tab").forEach((btn) => {
-          btn.classList.toggle("is-active", btn.dataset.tab === tab);
+    function switchTab(tab) {
+      $$(".tab").forEach((btn) => {
+        btn.classList.toggle("is-active", btn.dataset.tab === tab);
+      });
+
+      $$(".pane").forEach((pane) => {
+        pane.classList.toggle(
+          "is-active",
+          pane.id === "pane-" + tab
+        );
+      });
+
+      if (tab === "anniv") {
+        window.scrollTo({
+          top: $(".tabs").offsetTop - 10,
+          behavior: "smooth",
         });
+      }
+    }
 
-        $$(".pane").forEach((pane) => {
-          pane.classList.toggle("is-active", pane.id === "pane-" + tab);
-        });
+    // ==========================================
+    // MENAMBAHKAN TABUNGAN
+    // ==========================================
 
-        if (tab === "anniv") {
-          window.scrollTo({
-            top: $(".tabs").offsetTop - 10,
-            behavior: "smooth",
-          });
-        }
+    async function addSaving(who) {
+      const amountInput = $(`[data-amount="${who}"]`);
+      const noteInput = $(`[data-note="${who}"]`);
+
+      const amount = Number(amountInput.value);
+      const note = noteInput.value.trim();
+
+      if (!Number.isFinite(amount) || amount <= 0) {
+        showToast("Isi nominal tabungan dulu ya");
+        return;
       }
 
-      // ==========================================
-      // MENAMBAHKAN TABUNGAN
-      // ==========================================
+      setSaveStatus("Menyimpan...");
 
-      async function addSaving(who) {
-        const amountInput = $(`[data-amount="${who}"]`);
-        const noteInput = $(`[data-note="${who}"]`);
-
-        const amount = Number(amountInput.value);
-        const note = noteInput.value.trim();
-
-        if (!Number.isFinite(amount) || amount <= 0) {
-          showToast("Isi nominal tabungan dulu ya");
-          return;
-        }
-
-        setSaveStatus("Menyimpan...");
-
-        const { error } = await supabaseClient.from("savings").insert({
+      const { error } = await supabaseClient
+        .from("savings")
+        .insert({
           who,
           amount,
           note,
           created_by: currentUser.id,
         });
 
-        if (error) {
-          console.error(error);
-          setSaveStatus("Gagal menyimpan");
-          showToast("Tabungan gagal disimpan. Coba lagi ya.");
-          return;
-        }
-
-        amountInput.value = "";
-        noteInput.value = "";
-
-        await loadCloudData();
-
-        showToast(
-          `Hebat! ${state.names[who]} berhasil menabung ${formatRupiah(amount)}. Sedikit demi sedikit, impian kalian semakin dekat!`,
-        );
+      if (error) {
+        console.error(error);
+        setSaveStatus("Gagal menyimpan");
+        showToast("Tabungan gagal disimpan. Coba lagi ya.");
+        return;
       }
 
-      // ==========================================
-      // MENGHAPUS CATATAN TABUNGAN
-      // ==========================================
+      amountInput.value = "";
+      noteInput.value = "";
 
-      async function removeSaving(id) {
-        if (!confirm("Yakin ingin menghapus catatan tabungan ini?")) {
-          return;
-        }
+      await loadCloudData();
 
-        setSaveStatus("Menghapus...");
+      showToast(
+        `Hebat! ${state.names[who]} berhasil menabung ${formatRupiah(amount)}. Sedikit demi sedikit, impian kalian semakin dekat!`
+      );
+    }
 
+    // ==========================================
+    // MENGHAPUS CATATAN TABUNGAN
+    // ==========================================
+
+    async function removeSaving(id) {
+      if (!confirm("Yakin ingin menghapus catatan tabungan ini?")) {
+        return;
+      }
+
+      setSaveStatus("Menghapus...");
+
+      const { error } = await supabaseClient
+        .from("savings")
+        .delete()
+        .eq("id", Number(id));
+
+      if (error) {
+        console.error(error);
+        setSaveStatus("Gagal menghapus");
+        showToast("Catatan tabungan gagal dihapus.");
+        return;
+      }
+
+      await loadCloudData();
+
+      showToast("Catatan tabungan berhasil dihapus");
+    }
+
+    // ==========================================
+    // MENYIMPAN JAWABAN PASANGAN
+    // ==========================================
+
+    async function saveAnswer(who) {
+      const question = currentQuestion(who);
+      const key = `${who}|${question}`;
+      const text = $(`[data-answer="${who}"]`).value.trim();
+
+      setSaveStatus("Menyimpan...");
+
+      if (text) {
         const { error } = await supabaseClient
-          .from("savings")
-          .delete()
-          .eq("id", Number(id));
-
-        if (error) {
-          console.error(error);
-          setSaveStatus("Gagal menghapus");
-          showToast("Catatan tabungan gagal dihapus.");
-          return;
-        }
-
-        await loadCloudData();
-
-        showToast("Catatan tabungan berhasil dihapus");
-      }
-
-      // ==========================================
-      // MENYIMPAN JAWABAN PASANGAN
-      // ==========================================
-
-      async function saveAnswer(who) {
-        const question = currentQuestion(who);
-        const key = `${who}|${question}`;
-        const text = $(`[data-answer="${who}"]`).value.trim();
-
-        setSaveStatus("Menyimpan...");
-
-        if (text) {
-          const { error } = await supabaseClient.from("answers").upsert(
+          .from("answers")
+          .upsert(
             {
               who,
               question,
@@ -1747,148 +1758,157 @@
             },
             {
               onConflict: "who,question",
-            },
+            }
           );
-
-          if (error) {
-            console.error(error);
-            setSaveStatus("Gagal menyimpan");
-            showToast("Jawaban gagal disimpan.");
-            return;
-          }
-
-          state.answers[key] = text;
-        } else {
-          const { error } = await supabaseClient
-            .from("answers")
-            .delete()
-            .eq("who", who)
-            .eq("question", question);
-
-          if (error) {
-            console.error(error);
-            setSaveStatus("Gagal menghapus");
-            showToast("Jawaban gagal dihapus.");
-            return;
-          }
-
-          delete state.answers[key];
-        }
-
-        renderQuestions();
-        setSaveStatus("Tersimpan online");
-        showToast("Jawaban berhasil disimpan");
-      }
-
-      // ==========================================
-      // MENGGANTI PERTANYAAN
-      // ==========================================
-
-      function nextQuestion(who) {
-        const total = QUESTIONS[who].length;
-        let next;
-
-        do {
-          next = Math.floor(Math.random() * total);
-        } while (next === state.questionIndex[who] % total && total > 1);
-
-        state.questionIndex[who] = next;
-        renderQuestions();
-      }
-
-      // ==========================================
-      // TOMBOL DAN AKSI
-      // ==========================================
-
-      const actions = {
-        tab: (el) => switchTab(el.dataset.tab),
-
-        "add-saving": (el) => addSaving(el.dataset.who),
-
-        "remove-saving": (el) => removeSaving(el.dataset.id),
-
-        filter: (el) => {
-          activeFilter = el.dataset.filter;
-          renderSavers();
-          renderHistory();
-        },
-
-        "save-answer": (el) => saveAnswer(el.dataset.who),
-
-        "next-question": (el) => nextQuestion(el.dataset.who),
-      };
-
-      document.addEventListener("click", (event) => {
-        const el = event.target.closest("[data-action]");
-
-        if (!el) return;
-
-        const handler = actions[el.dataset.action];
-
-        if (handler) {
-          event.preventDefault();
-          handler(el);
-        }
-      });
-
-      // ==========================================
-      // MENGUBAH TANGGAL JADIAN
-      // ==========================================
-
-      $("#startDate").addEventListener("change", async (event) => {
-        if (!event.target.value) return;
-
-        state.startDate = event.target.value;
-
-        await saveSettings();
-        renderAll();
-      });
-
-      // ==========================================
-      // MENGUBAH NAMA PASANGAN
-      // ==========================================
-
-      [
-        ["#nameF", "f", "Aldi"],
-        ["#nameM", "m", "Malla"],
-      ].forEach(([selector, who, fallback]) => {
-        const el = $(selector);
-
-        el.addEventListener("blur", async () => {
-          const newName = el.textContent.trim().slice(0, 20) || fallback;
-
-          state.names[who] = newName;
-
-          renderAll();
-          await saveSettings();
-        });
-
-        el.addEventListener("keydown", (event) => {
-          if (event.key === "Enter") {
-            event.preventDefault();
-            el.blur();
-          }
-        });
-      });
-
-      // ==========================================
-      // SAAT WEBSITE DIBUKA
-      // ==========================================
-
-      async function initializeApp() {
-        $("#loginScreen").hidden = false;
-        $("#appShell").hidden = true;
-
-        const { data, error } = await supabaseClient.auth.getSession();
 
         if (error) {
           console.error(error);
+          setSaveStatus("Gagal menyimpan");
+          showToast("Jawaban gagal disimpan.");
           return;
         }
 
-        if (data.session) {
-          await showApplication(data.session.user);
+        state.answers[key] = text;
+
+      } else {
+        const { error } = await supabaseClient
+          .from("answers")
+          .delete()
+          .eq("who", who)
+          .eq("question", question);
+
+        if (error) {
+          console.error(error);
+          setSaveStatus("Gagal menghapus");
+          showToast("Jawaban gagal dihapus.");
+          return;
         }
+
+        delete state.answers[key];
       }
 
-      initializeApp();
+      renderQuestions();
+      setSaveStatus("Tersimpan online");
+      showToast("Jawaban berhasil disimpan");
+    }
+
+    // ==========================================
+    // MENGGANTI PERTANYAAN
+    // ==========================================
+
+    function nextQuestion(who) {
+      const total = QUESTIONS[who].length;
+      let next;
+
+      do {
+        next = Math.floor(Math.random() * total);
+      } while (
+        next === state.questionIndex[who] % total &&
+        total > 1
+      );
+
+      state.questionIndex[who] = next;
+      renderQuestions();
+    }
+
+    // ==========================================
+    // TOMBOL DAN AKSI
+    // ==========================================
+
+    const actions = {
+      tab: (el) => switchTab(el.dataset.tab),
+
+      "add-saving": (el) => addSaving(el.dataset.who),
+
+      "remove-saving": (el) => removeSaving(el.dataset.id),
+
+      filter: (el) => {
+        activeFilter = el.dataset.filter;
+        renderSavers();
+        renderHistory();
+      },
+
+      "save-answer": (el) => saveAnswer(el.dataset.who),
+
+      "next-question": (el) => nextQuestion(el.dataset.who),
+    };
+
+    document.addEventListener("click", (event) => {
+      const el = event.target.closest("[data-action]");
+
+      if (!el) return;
+
+      const handler = actions[el.dataset.action];
+
+      if (handler) {
+        event.preventDefault();
+        handler(el);
+      }
+    });
+
+    // ==========================================
+    // MENGUBAH TANGGAL JADIAN
+    // ==========================================
+
+    $("#startDate").addEventListener("change", async (event) => {
+      if (!event.target.value) return;
+
+      state.startDate = event.target.value;
+
+      await saveSettings();
+      renderAll();
+    });
+
+    // ==========================================
+    // MENGUBAH NAMA PASANGAN
+    // ==========================================
+
+    [
+      ["#nameF", "f", "Aldi"],
+      ["#nameM", "m", "Malla"],
+    ].forEach(([selector, who, fallback]) => {
+      const el = $(selector);
+
+      el.addEventListener("blur", async () => {
+        const newName =
+          el.textContent.trim().slice(0, 20) || fallback;
+
+        state.names[who] = newName;
+
+        renderAll();
+        await saveSettings();
+      });
+
+      el.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          el.blur();
+        }
+      });
+    });
+
+    // ==========================================
+    // SAAT WEBSITE DIBUKA
+    // ==========================================
+
+    async function initializeApp() {
+      $("#loginScreen").hidden = false;
+      $("#appShell").hidden = true;
+
+      const { data, error } = await supabaseClient.auth.getSession();
+
+      if (error) {
+        console.error(error);
+        return;
+      }
+
+      if (data.session) {
+        await showApplication(data.session.user);
+      }
+    }
+
+    initializeApp();
+  </script>
+</body>
+</html>
+</html>
